@@ -9,13 +9,15 @@ DB.authenticate()
   .then(() => console.log('Base de datos conectada'))
   .catch((error) => console.log('Error al conectar la base de datos: ', error))
 
-const acceptedDomains = ['http://localhost:5173', 'https://biblioteca-juegos-backend.onrender.com']
+const acceptedDomains = ['http://localhost:5173', 'biblioteca-juegos-carrison.netlify.app']
 
 const corsOptions = {
   origin: (origin, callback) => {
-    acceptedDomains.includes(origin)
-      ? callback(null, true)
-      : callback(new Error('No permitido por CORS'))
+    if (acceptedDomains.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('No permitido por CORS'))
+    }
   }
 }
 
