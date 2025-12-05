@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import { router } from './routes/router.js'
 import { DB } from './config/DB.js'
 
@@ -7,6 +8,18 @@ const app = express()
 DB.authenticate()
   .then(() => console.log('Base de datos conectada'))
   .catch((error) => console.log('Error al conectar la base de datos: ', error))
+
+const acceptedDomains = ['http://localhost:5173', 'https://biblioteca-juegos-backend.onrender.com']
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    acceptedDomains.includes(origin)
+      ? callback(null, true)
+      : callback(new Error('No permitido por CORS'))
+  }
+}
+
+app.use(cors(corsOptions))
 
 const PORT = process.env.PORT ?? 8080
 
