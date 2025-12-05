@@ -13,7 +13,7 @@ const acceptedDomains = ['http://localhost:5173', 'https://biblioteca-juegos-car
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (acceptedDomains.includes(origin)) {
+    if (!origin || acceptedDomains.includes(origin)) {
       callback(null, true)
     } else {
       callback(new Error('No permitido por CORS'))
