@@ -3,8 +3,8 @@ import { getGames, searchGame, createGame, deleteGame, editGame } from '../contr
 
 export const router = Router()
 
-router.get('/api/games', getGames)
-router.get('/api/search/:game', searchGame)
-router.post('/api/create', createGame)
-router.delete('/api/delete/:id', deleteGame)
-router.put('/api/edit', editGame)
+router.get('/games', getGames)
+router.get('/search/:game', searchGame)
+router.post('/create', createGame)
+router.delete('/delete/:id', deleteGame)
+router.put('/edit', editGame)

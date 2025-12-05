@@ -29,6 +29,6 @@ app.use(express.json())
 
 app.disable('x-powered-by')
 
-app.use('/', router)
+app.use('/api', router)
 
 app.listen(PORT)
