@@ -9,7 +9,7 @@ DB.authenticate()
   .then(() => console.log('Base de datos conectada'))
   .catch((error) => console.log('Error al conectar la base de datos: ', error))
 
-const acceptedDomains = ['http://localhost:5173', 'biblioteca-juegos-carrison.netlify.app']
+const acceptedDomains = ['http://localhost:5173']
 
 const corsOptions = {
   origin: (origin, callback) => {
