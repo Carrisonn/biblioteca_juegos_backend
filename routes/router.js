@@ -4,7 +4,7 @@ import { getGames, searchGame, createGame, deleteGame, editGame } from '../contr
 export const router = Router()
 
 router.get('/games', getGames)
-router.get('/search/:game', searchGame)
-router.post('/create', createGame)
-router.delete('/delete/:id', deleteGame)
-router.put('/edit', editGame)
+router.get('/games/:game', searchGame)
+router.post('/games', createGame)
+router.delete('/games/:id', deleteGame)
+router.put('/games/:id', editGame)
