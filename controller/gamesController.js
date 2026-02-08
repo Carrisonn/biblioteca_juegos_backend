@@ -51,7 +51,7 @@ export async function deleteGame(req, res) {
     if (!gameToDelete) return res.status(404).json({ errorMessage: 'No se ha podido borrar el juego o ya ha sido borrado' })
 
     await gameToDelete.destroy()
-    res.status(200).json({ gameToDelete, successMessage: 'Juego borrado de la lista' })
+    res.status(200).json({ deletedGame: gameToDelete, successMessage: `${gameToDelete.game} ha sido borrado` })
   } catch (error) {
     console.log(error)
     res.status(500).json({ errorMessage: 'Error interno del servidor' })
@@ -59,15 +59,19 @@ export async function deleteGame(req, res) {
 }
 
 export async function editGame(req, res) {
-  const { id, game, state } = req.body
-  if (!id || !game || !state) return res.status(400).json({ errorMessage: 'Faltan datos en el formulario' })
+  const { id } = req.params
+  const { game, state } = req.body
+  if (!id) return res.status(400).json({ errorMessage: 'Faltan datos en el formulario' })
 
   try {
-    const [affectedRows] = await GameModel.update({ game, state }, { where: { id } })
-    if (!affectedRows) return res.status(404).json({ errorMessage: 'Hubo un problema al guardar cambios' })
+    const gameToUpdate = await GameModel.findByPk(id)
+    if (!gameToUpdate) return res.status(404).json({ errorMessage: 'No se ha podido actualizar el juego o ya ha sido actualizado' })
 
-    const updatedGame = await GameModel.findOne({ where: { id } })
-    res.status(200).json({ updatedGame, successMessage: 'Juego actualizado 🎉' })
+    if (game) gameToUpdate.game = game
+    if (state) gameToUpdate.state = state
+
+    await gameToUpdate.save()
+    res.status(200).json({ updatedGame: gameToUpdate, successMessage: `${game} ha sido actualizado 🎉` })
   } catch (error) {
     console.log(error)
     res.status(500).json({ errorMessage: 'Error interno del servidor' })
