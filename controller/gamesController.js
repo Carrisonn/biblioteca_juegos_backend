@@ -3,8 +3,12 @@ import { GameModel } from '../model/GameModel.js'
 
 export async function getGames(req, res) {
   try {
-    const games = await GameModel.findAll()
-    res.status(200).json({ games })
+    const [games, count] = await Promise.all([
+      GameModel.findAll(),
+      GameModel.count()
+    ])
+
+    res.status(200).json({ games, totalGames: count })
   } catch (error) {
     console.log(error)
     res.status(500).json({ errorMessage: 'Error interno del servidor' })
@@ -35,7 +39,13 @@ export async function createGame(req, res) {
     if (gameExist) return res.status(409).json({ errorMessage: `El juego "${game}" ya esta en la lista` })
 
     const newGame = await GameModel.create({ game, state })
-    res.status(200).json({ newGame, successMessage: `${game} agregado a la lista 🎉` })
+    const count = await GameModel.count()
+
+    res.status(200).json({
+      newGame,
+      totalGames: count,
+      successMessage: `${game} agregado a la lista 🎉`
+    })
   } catch (error) {
     console.log(error)
     res.status(500).json({ errorMessage: 'Error interno del servidor' })
@@ -51,7 +61,13 @@ export async function deleteGame(req, res) {
     if (!gameToDelete) return res.status(404).json({ errorMessage: 'No se ha podido borrar el juego o ya ha sido borrado' })
 
     await gameToDelete.destroy()
-    res.status(200).json({ deletedGame: gameToDelete, successMessage: `${gameToDelete.game} ha sido borrado` })
+    const count = await GameModel.count()
+
+    res.status(200).json({
+      deletedGame: gameToDelete,
+      totalGames: count,
+      successMessage: `${gameToDelete.game} ha sido borrado`
+    })
   } catch (error) {
     console.log(error)
     res.status(500).json({ errorMessage: 'Error interno del servidor' })
@@ -71,7 +87,11 @@ export async function editGame(req, res) {
     if (state) gameToUpdate.state = state
 
     await gameToUpdate.save()
-    res.status(200).json({ updatedGame: gameToUpdate, successMessage: `${game} ha sido actualizado 🎉` })
+
+    res.status(200).json({
+      updatedGame: gameToUpdate,
+      successMessage: `${game} ha sido actualizado 🎉`
+    })
   } catch (error) {
     console.log(error)
     res.status(500).json({ errorMessage: 'Error interno del servidor' })
