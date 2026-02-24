@@ -9,6 +9,7 @@ const app = express()
 const PORT = process.env.PORT ?? 8080
 
 await DB.authenticate()
+await DB.sync({ alter: true })
 
 app.use(cors(corsOptions))
 
