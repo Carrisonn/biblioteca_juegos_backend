@@ -38,7 +38,7 @@ export async function createGame(req, res) {
     const newGame = await GameModel.create({ game, state })
     const count = await GameModel.count()
 
-    res.status(200).json({
+    res.status(201).json({
       newGame,
       totalGames: count,
       message: `${game} agregado a la lista 🎉`
@@ -78,7 +78,8 @@ export async function deleteGame(req, res) {
 export async function editGame(req, res) {
   const { id } = req.params
   const { game, state } = req.body
-  if (!id) return res.status(400).json({ message: 'Faltan datos en el formulario' })
+  if (!id) return res.status(400).json({ message: 'Falta el ID para actualizar el juego' })
+  if (!game || !state) return res.status(400).json({ message: 'Faltan datos en el formulario' })
 
   try {
     const gameToUpdate = await GameModel.findByPk(id)
