@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize'
-import dotenv from 'dotenv'
+import { config } from 'dotenv'
 
-dotenv.config()
+config()
 
 export const DB = new Sequelize(process.env.DB_URI, {
   dialect: 'mysql',
@@ -13,3 +13,16 @@ export const DB = new Sequelize(process.env.DB_URI, {
     idle: 10000
   }
 })
+
+export async function connectDB(tries = 3) {
+  try {
+    await DB.authenticate()
+    // await DB.sync()
+  } catch (error) {
+    if (tries <= 1) throw new Error('No se pudo iniciar la conexión con la base de datos')
+
+    await new Promise(resolve => setTimeout(resolve, 3000))
+
+    return connectDB(tries - 1)
+  }
+}
