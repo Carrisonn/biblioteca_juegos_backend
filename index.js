@@ -1,19 +1,18 @@
-import express from 'express'
+import express, { json } from 'express'
 import cors from 'cors'
+import { connectDB } from './config/DB.js'
 import { router } from './routes/router.js'
-import { DB } from './config/DB.js'
 import { corsOptions } from './config/cors.js'
 
 const app = express()
 
 const PORT = process.env.PORT ?? 8080
 
-await DB.authenticate()
-await DB.sync({ alter: true })
+await connectDB()
 
 app.use(cors(corsOptions))
 
-app.use(express.json())
+app.use(json())
 
 app.disable('x-powered-by')
 
