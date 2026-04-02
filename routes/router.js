@@ -1,5 +1,12 @@
 import { Router } from 'express'
-import { getGames, searchGame, createGame, deleteGame, editGame } from '../controller/gamesController.js'
+import {
+  getGames,
+  searchGame,
+  createGame,
+  deleteGame,
+  editGame,
+  APIHealthCheck
+} from '../controller/gamesController.js'
 
 export const router = Router()
 
@@ -8,3 +15,5 @@ router.get('/games/:game', searchGame)
 router.post('/games', createGame)
 router.delete('/games/:id', deleteGame)
 router.put('/games/:id', editGame)
+
+router.get('/health', APIHealthCheck)
