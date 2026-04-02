@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize'
-import { config } from 'dotenv'
+import { loadEnvFile } from 'node:process'
 
-config()
+loadEnvFile()
 
 export const DB = new Sequelize(process.env.DB_URI, {
   dialect: 'mysql',
