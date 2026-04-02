@@ -45,6 +45,7 @@ export async function createGame(req, res) {
     })
   } catch (error) {
     console.log(error)
+
     if (error.name === 'SequelizeUniqueConstraintError') {
       return res.status(409).json({ message: `El juego "${game}" ya esta en la lista` })
     }
@@ -97,5 +98,14 @@ export async function editGame(req, res) {
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Error interno del servidor' })
+  }
+}
+
+export function APIHealthCheck(req, res) {
+  try {
+    res.status(200).send(`Todo OK desde hace ${Math.round(process.uptime())}s`)
+  } catch (error) {
+    console.log(error)
+    res.status(500)
   }
 }
