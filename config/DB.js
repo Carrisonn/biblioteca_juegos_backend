@@ -1,7 +1,9 @@
 import { Sequelize } from 'sequelize'
 import { loadEnvFile } from 'node:process'
 
-loadEnvFile()
+if (process.env.NODE_ENV !== 'production') {
+  loadEnvFile()
+}
 
 export const DB = new Sequelize(process.env.DB_URI, {
   dialect: 'mysql',
