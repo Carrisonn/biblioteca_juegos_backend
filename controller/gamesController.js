@@ -101,11 +101,21 @@ export async function editGame(req, res) {
   }
 }
 
-export function APIHealthCheck(req, res) {
-  try {
-    res.status(200).send(`Todo OK desde hace ${Math.round(process.uptime())}s`)
-  } catch (error) {
-    console.log(error)
-    res.status(500)
-  }
+export async function APIHealthCheck(req, res) {
+  const relativaTimeFormat = new Intl.RelativeTimeFormat('es', {
+    numeric: 'auto',
+    style: 'narrow'
+  })
+
+  const uptime = process.uptime()
+  const now = new Date().getSeconds()
+
+  const difSeconds = Math.round((uptime - now) / 1000)
+  const difHours = Math.round(difSeconds / 3600)
+  const APIUptime = relativaTimeFormat.format(difHours, 'hour')
+
+  res.status(200).json({
+    text: `Servicio en línea desde ${APIUptime}`,
+    onLine: true
+  })
 }
