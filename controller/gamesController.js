@@ -104,7 +104,7 @@ export async function editGame(req, res) {
 export async function APIHealthCheck(req, res) {
   const relativaTimeFormat = new Intl.RelativeTimeFormat('es', {
     numeric: 'auto',
-    style: 'narrow'
+    style: 'long'
   })
 
   const uptime = process.uptime()
