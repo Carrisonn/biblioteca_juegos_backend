@@ -1,19 +1,11 @@
 import { Router } from 'express'
-import {
-  getGames,
-  searchGame,
-  createGame,
-  deleteGame,
-  editGame,
-  APIHealthCheck
-} from '../controller/gamesController.js'
+import { Controller } from '../controller/gamesController.js'
 
 export const router = Router()
 
-router.get('/games', getGames)
-router.get('/games/:game', searchGame)
-router.post('/games', createGame)
-router.delete('/games/:id', deleteGame)
-router.put('/games/:id', editGame)
+router.get('/games', Controller.getGames)
+router.post('/games', Controller.createGame)
+router.put('/games/:id', Controller.editGame)
+router.delete('/games/:id', Controller.deleteGame)
 
-router.get('/health', APIHealthCheck)
+router.get('/health', Controller.APIHealthCheck)
